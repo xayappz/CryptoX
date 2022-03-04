@@ -46,7 +46,7 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
             "$" + df.format(BigDecimal(list.get(position)?.quote?.USD?.price.toString()))
         var changeP = list.get(position)?.quote?.USD?.percent_change_24h?.toDouble()
         holder.binding.priceChange.text =
-            changeP.toString()+"%"
+            changeP.toString() + "%"
 
         if (changeP != null) {
             if (changeP < 0) {
@@ -57,7 +57,7 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
 
                 holder.binding.updownIV.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_trending_up_24))
                 holder.binding.priceChange.text =
-                    "+" + changeP.toString()+"%"
+                    "+" + changeP.toString() + "%"
                 holder.binding.priceChange.setTextColor(context.getColor(R.color.green))
 
             }

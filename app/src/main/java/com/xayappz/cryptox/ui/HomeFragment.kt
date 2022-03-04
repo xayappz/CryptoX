@@ -2,10 +2,10 @@ package com.xayappz.cryptox.ui
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.common.util.concurrent.ListenableFuture
 import com.xayappz.cryptox.CoinVMFactory
 import com.xayappz.cryptox.R
@@ -28,24 +29,32 @@ import com.xayappz.cryptox.viewmodels.CoinViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
-class FirstFragment : Fragment() {
+class HomeFragment : Fragment() {
     lateinit var _coin_ViewModel: CoinViewModel
     private val _retrofitService = ApiInterfaceService.getInstance()
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
-    private var anyError = Boolean
     private var _responseCoinsData = ArrayList<Data?>()
+    private var _searchCoinsData = ArrayList<Data?>()
+    var dataCoins = ArrayList<String>()
+
     private var progressDialog: ProgressDialog? = null
+    val searchHM: HashMap<String, Data?> = HashMap<String, Data?>() //define empty hashmap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _coin_ViewModel =
             ViewModelProvider(this, CoinVMFactory(RepositoryCoin(_retrofitService))).get(
                 CoinViewModel::class.java
             )
+
         loaderShowDialog()
     }
 
@@ -53,7 +62,6 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -62,10 +70,94 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launch(Dispatchers.Main)
+        {
+            _coin_ViewModel.getSearchEnabledLiveData().observe(this@HomeFragment, Observer {
+            })
+
+        }
+
+        lifecycleScope.launch(Dispatchers.Main)
+        {
+            _coin_ViewModel.getSearchData().observe(this@HomeFragment, Observer {
+                _searchCoinsData.clear()
+                _searchCoinsData.add(it)
+                setAdapter(_searchCoinsData)
+            })
+
+        }
+
+        lifecycleScope.launch(Dispatchers.Main)
+        {
+            _coin_ViewModel.getSearchData().observe(this@HomeFragment, Observer {
+            })
+
+        }
+
+
         loadDataFromApi()
     }
 
+    private fun searchData() {
+        var yes = false
+        _binding?.searchcoin?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                checkList(query)
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.equals("")) {
+                    setAdapter(_responseCoinsData)
+                } else {
+                    checkList(newText)
+
+                }
+                return false
+            }
+        })
+
+        _binding?.searchcoin?.setOnClickListener {
+            yes = if (!yes) {
+                _coin_ViewModel.isSearchEnabled(true)
+                true
+            } else {
+                _coin_ViewModel.isSearchEnabled(false)
+                false
+
+            }
+        }
+
+        _binding?.searchcoin?.setOnCloseListener(object : SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                _searchCoinsData.clear()
+                setAdapter(_responseCoinsData)
+                return false
+            }
+        })
+    }
+
+    private fun checkList(newText: String) {
+        for (data in _coin_ViewModel.coinListData.value?.getDataCoin()!!) {
+            searchHM.put(data?.name.toString(), data)
+            searchHM.put(data?.symbol.toString(), data)
+        }
+        if (searchHM.contains(newText)) {
+            var Data = searchHM.get(newText)
+            _coin_ViewModel.addSearchData(Data)
+        } else {
+            _binding?.let {
+                Snackbar.make(it.rootLay, "${newText} Not found", Snackbar.LENGTH_LONG).show()
+            }
+
+        }
+    }
+
     private fun loadDataFromApi() {
+        searchData()
 
         lifecycleScope.launch(Dispatchers.IO) {
 
@@ -75,7 +167,7 @@ class FirstFragment : Fragment() {
             {
 
                 _coin_ViewModel.coinListData.observe(
-                    this@FirstFragment.requireActivity(),
+                    this@HomeFragment.requireActivity(),
                     Observer {
 
                         if (_coin_ViewModel.coinListData.value != null) {
@@ -84,7 +176,7 @@ class FirstFragment : Fragment() {
                                     _responseCoinsData.add(data)
 
                                 }
-                                setAdapter()
+                                setAdapter(_responseCoinsData)
                             }
 
                         } else {
@@ -95,7 +187,7 @@ class FirstFragment : Fragment() {
 
                     })
                 _coin_ViewModel.errorMessage.observe(
-                    this@FirstFragment.requireActivity(),
+                    this@HomeFragment.requireActivity(),
                     Observer {
                         _binding?.fab?.visibility = View.GONE
                         _binding?.errorTV?.visibility = View.GONE
@@ -120,7 +212,7 @@ class FirstFragment : Fragment() {
 
     private fun loaderShowDialog() {
         progressDialog =
-            ProgressDialog(this@FirstFragment.requireContext(), R.style.AppCompatAlertDialogStyle)
+            ProgressDialog(this@HomeFragment.requireContext(), R.style.AppCompatAlertDialogStyle)
         progressDialog?.setTitle("Please wait")
         progressDialog?.setCancelable(false)
         progressDialog?.setMessage("Loading Data")
@@ -146,14 +238,14 @@ class FirstFragment : Fragment() {
     }
 
 
-    private fun setAdapter() {
+    private fun setAdapter(data: ArrayList<Data?>) {
         lifecycleScope.launch(Dispatchers.Main) {
             progressDialog?.cancel()
         }
 
         _binding?.CryptoRV?.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = CoinAdapter(this.context, _responseCoinsData)
+            adapter = CoinAdapter(this.context, data)
         }
         fetchDataWM()
     }
@@ -177,7 +269,6 @@ class FirstFragment : Fragment() {
                     _responseCoinsData.clear()
                     loadDataFromApi()
                 }
-                Log.d("periodicWorkRequest", "Status changed to ${it.state.isFinished}")
 
             }
         }
