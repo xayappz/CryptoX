@@ -58,7 +58,7 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
                 holder.binding.updownIV.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_trending_up_24))
                 holder.binding.priceChange.text =
                     "+" + changeP.toString()+"%"
-                holder.binding.priceChange.setTextColor(context.getColor(R.color.teal_700))
+                holder.binding.priceChange.setTextColor(context.getColor(R.color.green))
 
             }
         }
