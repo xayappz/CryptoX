@@ -7,14 +7,17 @@ With a seamless user experience and a simplistic user interface, CryptoX App eme
 ## Screenshots 
 
 
-SplashScreen
+<p align="center"> <b> SplashScreen</b> </p>
 
-![Screenshot_1646314595](https://user-images.githubusercontent.com/77268176/156576489-61fa02b6-698c-477b-a82d-b52aa7b01c7f.png)
+<p align="center">  <img src="https://user-images.githubusercontent.com/77268176/156576489-61fa02b6-698c-477b-a82d-b52aa7b01c7f.png"> </p>
 
-HomeScreen
+<p align="center"> <b>HomeScreen</b>
 
-![Screenshot_1646364373](https://user-images.githubusercontent.com/77268176/156693738-09b1f019-9780-490f-b29d-f2932af08803.png)
+<p align="center">  <img src="https://user-images.githubusercontent.com/77268176/156693738-09b1f019-9780-490f-b29d-f2932af08803.png"></p>
 
-Error Screen
 
-![Screenshot_1646314597](https://user-images.githubusercontent.com/77268176/156576494-0f386dcf-ac21-4c1c-84c0-cee7d758d7c1.png)
+
+
+<p align="center"> <b> Error Screen</b>
+
+<p align="center">  <img src="https://user-images.githubusercontent.com/77268176/156576494-0f386dcf-ac21-4c1c-84c0-cee7d758d7c1.png"></p>
