@@ -2,6 +2,7 @@ package com.xayappz.cryptox.ui
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -171,6 +172,7 @@ class HomeFragment : Fragment() {
                     Observer {
 
                         if (_coin_ViewModel.coinListData.value != null) {
+                            _responseCoinsData.clear()
                             if (it.getStatus()?.error_code == 0) {
                                 for (data in it.getDataCoin()!!) {
                                     _responseCoinsData.add(data)
