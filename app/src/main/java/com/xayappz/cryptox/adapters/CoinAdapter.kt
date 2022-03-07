@@ -2,6 +2,7 @@ package com.xayappz.cryptox.adapters
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -30,7 +31,6 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
 
 
     override fun getItemCount(): Int {
-
         return list.size
 
 
@@ -40,6 +40,7 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val df = DecimalFormat("#,###.00")
+
         holder.binding.fullname.text = list.get(position)?.name
         holder.binding.shortname.text = list.get(position)?.symbol
         holder.binding.price.text =
@@ -62,7 +63,6 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
 
             }
         }
-
 
     }
 

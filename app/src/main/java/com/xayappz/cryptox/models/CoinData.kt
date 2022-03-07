@@ -12,6 +12,12 @@ class CoinData {
         return dataCoin
     }
 
+    var ErrorOccured: String = ""
+
+    fun getError(): String {
+        return ErrorOccured
+    }
+
     @SerializedName("status")
     private val status: Status? = null
     fun getStatus(): Status? {

@@ -69,6 +69,6 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-    implementation "android.arch.work:work-runtime:1.0.1-alpha02"
+    implementation "android.arch.work:work-runtime:1.0.1"
 
 }

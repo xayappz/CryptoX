@@ -2,7 +2,6 @@ package com.xayappz.cryptox.ui
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +47,7 @@ class HomeFragment : Fragment() {
     val searchHM: SearchingHM<String, Data?> = SearchingHM<String, Data?>()
     val dataHM: HashMap<String, String?> =
         HashMap<String, String?>()
+    var retry = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,15 +68,6 @@ class HomeFragment : Fragment() {
         activity?.actionBar?.setDisplayShowTitleEnabled(false)
         loaderShowDialog()
 
-        lifecycleScope.launch(Dispatchers.Main)
-        {
-            _coin_ViewModel.getSearchData().observe(viewLifecycleOwner, Observer {
-                _searchCoinsData.clear()
-                _searchCoinsData.add(it)
-                setAdapter(_searchCoinsData)
-            })
-
-        }
         loadDataFromApi()
 
 
@@ -135,26 +126,30 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkList(newText: String) {
-        if (dataHM.containsKey(newText.lowercase(Locale.getDefault()))) {
-            val Data = searchHM[newText]
-            _coin_ViewModel.addSearchData(Data)
-        } else {
-            _binding?.let {
-                Snackbar.make(it.rootLay, "${newText} Not found", Snackbar.LENGTH_LONG)
-            }
 
+        _searchCoinsData.clear()
+        _responseCoinsData.forEach {
 
+            if (it?.name?.lowercase(Locale.getDefault())
+                    ?.contains(newText.lowercase(Locale.getDefault()))!!
+            ) {
+
+                _searchCoinsData.add(it)
+                setAdapter(_searchCoinsData)
+                        }
+//
+//
         }
-
-
     }
+
 
     private fun loadDataFromApi() {
         searchData()
+        _coin_ViewModel.getAllCoinsReponse()
+
         _coin_ViewModel.getData().observe(
             this.requireActivity(),
             Observer {
-
                 if (_coin_ViewModel.getData().value != null) {
                     _responseCoinsData.clear()
                     if (it != null) {
@@ -179,26 +174,19 @@ class HomeFragment : Fragment() {
                     setAdapter(_responseCoinsData)
 
                 } else {
-                    retry("Api Error")  //api error
+                    if (!Util_Connection.isOnline(this.requireContext())) {
+                        retry("No Internet")  // error
+                    } else {
+                        if (!_searchCoinsData.isEmpty()) {
+                            retry("Api Error")  //api error
+
+                        }
+                    }
 
                 }
 
 
             })
-        _coin_ViewModel.errorMessage.observe(
-            this@HomeFragment.requireActivity(),
-            Observer {
-                _binding?.fab?.visibility = View.GONE
-                _binding?.errorTV?.visibility = View.GONE
-                if (it.contains(" No address")) {  //network error
-                    retry("No Internet")
-                } else if (!it.equals("OK")) {           //server side error
-                    retry("Some Error")
-
-                }
-
-            })
-
 
     }
 
@@ -214,12 +202,14 @@ class HomeFragment : Fragment() {
 
 
     private fun retry(error: String) {
+        progressDialog?.cancel()
         _binding?.fab?.visibility = View.VISIBLE
         _binding?.errorTV?.visibility = View.VISIBLE
         _binding?.errorTV?.text = error
-        progressDialog?.cancel()
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             if (Util_Connection.isOnline(this.requireContext())) {
+                _binding?.fab?.visibility = View.GONE
+                _binding?.errorTV?.visibility = View.GONE
                 loaderShowDialog()
                 loadDataFromApi()
 
