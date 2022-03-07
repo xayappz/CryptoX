@@ -23,6 +23,7 @@
 
 
             <ImageView
+                android:id="@+id/hamIV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -36,11 +37,13 @@
                 android:layout_marginStart="50dp"
                 android:layout_weight="2.6"
                 android:scaleX="-1.1"
+                android:id="@+id/logoiV"
                 android:src="@drawable/ic_baseline_currency_bitcoin_24" />
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchcoin"
                 app:defaultQueryHint="Coin Name"
+                app:iconifiedByDefault="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

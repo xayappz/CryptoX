@@ -1,5 +1,6 @@
 package com.xayappz.cryptox.apiinterfaces
 
+import com.xayappz.cryptox.BuildConfig
 import com.xayappz.cryptox.models.CoinData
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -8,8 +9,8 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 
 interface ApiInterfaceService {
-    @Headers("X-CMC_PRO_API_KEY:253d6962-09da-45b8-89ff-58bda8c00b6d")
-    @GET("cryptocurrency/listings/latest")
+    @Headers(BuildConfig.API_KEY)
+    @GET(BuildConfig.COIN_ENDPOINT)
     fun getAllCoinsResponse(): Call<CoinData>
 
 
@@ -19,7 +20,7 @@ interface ApiInterfaceService {
         fun getInstance(): ApiInterfaceService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
-                    .baseUrl("https://pro-api.coinmarketcap.com/v1/")
+                    .baseUrl(BuildConfig.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 retrofitService = retrofit.create(ApiInterfaceService::class.java)
