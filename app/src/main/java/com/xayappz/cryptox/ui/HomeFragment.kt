@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.common.util.concurrent.ListenableFuture
 import com.xayappz.cryptox.CoinVMFactory
 import com.xayappz.cryptox.R
@@ -132,11 +131,17 @@ class HomeFragment : Fragment() {
 
             if (it?.name?.lowercase(Locale.getDefault())
                     ?.contains(newText.lowercase(Locale.getDefault()))!!
+                ||
+                it?.symbol?.lowercase(Locale.getDefault()).contains(
+                    (newText.lowercase(Locale.getDefault())
+                            )
+                )
+
             ) {
 
-                _searchCoinsData.add(it)
-                setAdapter(_searchCoinsData)
-                        }
+            _searchCoinsData.add(it)
+            setAdapter(_searchCoinsData)
+        }
 //
 //
         }
