@@ -1,5 +1,7 @@
 package com.xayappz.cryptox.repository
 
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.xayappz.cryptox.apiinterfaces.ApiInterfaceService
 import com.xayappz.cryptox.models.CoinData
@@ -9,6 +11,8 @@ import retrofit2.Response
 
 class RepositoryCoin(private val retrofitService: ApiInterfaceService) {
     var coinListData = MutableLiveData<CoinData?>()
+
+
     var getAllCoins: Call<CoinData> = retrofitService.getAllCoinsResponse()
 
 

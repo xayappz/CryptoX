@@ -1,4 +1,4 @@
-package com.xayappz.cryptox.network
+package com.xayappz.cryptox.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

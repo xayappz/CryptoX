@@ -15,7 +15,7 @@ import com.xayappz.cryptox.models.Data
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
-class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
+class CoinAdapter(var context: Context, var list: List<Data?>) :
     RecyclerView.Adapter<CoinAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,11 +36,9 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
 
     }
 
-    // Bind data
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val df = DecimalFormat("#,###.00")
-
         holder.binding.fullname.text = list.get(position)?.name
         holder.binding.shortname.text = list.get(position)?.symbol
         holder.binding.price.text =
@@ -64,9 +62,9 @@ class CoinAdapter(var context: Context, var list: ArrayList<Data?>) :
             }
         }
 
+
     }
 
-    // Creating ViewHolder
     class ViewHolder(val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Any) {

@@ -1,7 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="?actionBarSize"
+        android:background="@color/white"
+        android:visibility="visible"
+       >
+
+
+        <ImageView
+            android:id="@+id/hamIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_dehaze_24"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/logoiV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleX="-1.1"
+            android:src="@drawable/ic_baseline_currency_bitcoin_24"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/searchcoin"
+            app:layout_constraintStart_toEndOf="@+id/hamIV"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchcoin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:defaultQueryHint="Search Coin Name"
+            app:iconifiedByDefault="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+<RelativeLayout
+    android:id="@+id/error_Lay"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:tint="@color/white"
+        android:layout_below="@+id/errorTV"
+        android:layout_margin="50dp"
+        app:backgroundTint="#EEE"
+        app:tint="#E91E63"
+        app:srcCompat="@drawable/ic_baseline_refresh_24" />
+
+    <TextView
+        android:id="@+id/errorTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/ic_baseline_error_24"
+        android:gravity="center"
+        android:text="Error"
+        android:textColor="#FF6E40"
+        android:textSize="18sp"
+   />
+</RelativeLayout>
+
+
 
     <include layout="@layout/content_main" />
 

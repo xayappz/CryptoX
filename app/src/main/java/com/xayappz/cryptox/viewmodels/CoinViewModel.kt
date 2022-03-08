@@ -3,26 +3,42 @@ package com.xayappz.cryptox.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.xayappz.cryptox.models.CoinData
+import com.xayappz.cryptox.models.Data
 import com.xayappz.cryptox.repository.RepositoryCoin
 
 
-class CoinViewModel constructor(private val repository: RepositoryCoin) : ViewModel() {
+class CoinViewModel constructor(val repository: RepositoryCoin) : ViewModel() {
     var coinListData = MutableLiveData<CoinData?>()
+    var data: ArrayList<Data?>
+    var coinListDataSearch: MutableLiveData<List<Data?>>?
 
-    var searchEnabled: MutableLiveData<Boolean> =
-        MutableLiveData<Boolean>(false)
+    init {
 
-    fun isSearchEnabled(yesLBoolean: Boolean) {
-        searchEnabled.value = yesLBoolean
+        getAllCoinsReponse()
+        data = ArrayList()
+        coinListDataSearch = MutableLiveData<List<Data?>>()
     }
-
 
     fun getAllCoinsReponse() {
         coinListData = repository.getCoinData()
     }
 
+
     fun getData(): MutableLiveData<CoinData?> {
         return coinListData
     }
+
+
+    fun addSearchData(CoinData: List<Data?>) {
+        coinListDataSearch?.value = CoinData
+
+
+    }
+
+
+    fun getSearchData(): MutableLiveData<List<Data?>> {
+        return coinListDataSearch!!
+    }
+
 
 }
