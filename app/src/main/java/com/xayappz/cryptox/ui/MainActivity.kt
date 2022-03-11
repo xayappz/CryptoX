@@ -98,7 +98,6 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.equals("")) {
-                    //   _coin_ViewModel.addSearchData(original_responseCoinsData)
                 } else {
                     checkList(newText)
 
@@ -138,12 +137,11 @@ class MainActivity : AppCompatActivity() {
 
         filteredData.clear()
         var index: Int = -1
-//        index = _responseCoinsData.binarySearch {
-//            it?.symbol?.lowercase(Locale.getDefault())?.compareTo(searchValue)!!
-//
-//        }
+        index = _responseCoinsData.binarySearch {
+            it?.symbol?.lowercase(Locale.getDefault())?.compareTo(searchValue)!!
 
-//        index = binarySearchIterative(_responseCoinsData, searchValue)
+        }
+
         index = _responseCoinsData.binarySearch {
             it?.name?.lowercase(Locale.getDefault())?.compareTo(searchValue)!!
         }
@@ -164,38 +162,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun binarySearchIterative(input: ArrayList<Data?>, eleToSearch: String): Int {
-        var low = 0
-        var high = input.size - 1
-        var mid = 0
-        while (low <= high) {
-            mid = low + ((high - low) / 2)
-            when {
-                eleToSearch > input[mid].toString() -> low =
-                    mid + 1    // element is greater than middle element of array, so it will be in right half of array
-                eleToSearch == input[mid].toString() -> return mid // found the element
-                eleToSearch < input[mid].toString() -> high =
-                    mid - 1   //element is less than middle element of array, so it will be in left half of the array.
-            }
-        }
-        return mid
-    }
-//    fun binarySearch(a: Array<Data>, x: String?): Int {
-//        var low = 0
-//        var high = a.size - 1
-//        var mid: Int
-//        while (low <= high) {
-//            mid = (low + high) / 2
-//            if (a[mid].equals(x!!) < 0) {
-//                low = mid + 1
-//            } else if (a[mid].equals(x) > 0) {
-//                high = mid - 1
-//            } else {
-//                return mid
-//            }
-//        }
-//        return -1
-//    }
 
 }
 
