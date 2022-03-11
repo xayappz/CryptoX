@@ -1,5 +1,6 @@
 package com.xayappz.cryptox.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.xayappz.cryptox.models.CoinData
@@ -11,6 +12,7 @@ class CoinViewModel constructor(val repository: RepositoryCoin) : ViewModel() {
     var coinListData = MutableLiveData<CoinData?>()
     var data: ArrayList<Data?>
     var coinListDataSearch: MutableLiveData<List<Data?>>?
+    var searchIndex = MutableLiveData<Int?>()
 
     init {
 
@@ -32,9 +34,15 @@ class CoinViewModel constructor(val repository: RepositoryCoin) : ViewModel() {
     fun addSearchData(CoinData: List<Data?>) {
         coinListDataSearch?.value = CoinData
 
-
     }
 
+    fun setSearchIndex(position: Int) {
+        searchIndex?.value = position
+    }
+
+    fun getSearchPosition(): MutableLiveData<Int?> {
+        return searchIndex
+    }
 
     fun getSearchData(): MutableLiveData<List<Data?>> {
         return coinListDataSearch!!

@@ -19,6 +19,7 @@ data class Data(
     val total_supply: Double = 0.0
 )
 
+
 data class Quote(
     val USD: USD
 )

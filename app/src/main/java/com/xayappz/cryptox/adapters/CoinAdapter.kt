@@ -15,7 +15,7 @@ import com.xayappz.cryptox.models.Data
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
-class CoinAdapter(var context: Context, var list: List<Data?>) :
+class CoinAdapter(var context: Context, var list: List<Data?>, var position: Int) :
     RecyclerView.Adapter<CoinAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +31,11 @@ class CoinAdapter(var context: Context, var list: List<Data?>) :
 
 
     override fun getItemCount(): Int {
-        return list.size
+        Log.d("positionposition", position.toString())
+        if (position == -1)
+            return list.size
+        else
+            return position
 
 
     }

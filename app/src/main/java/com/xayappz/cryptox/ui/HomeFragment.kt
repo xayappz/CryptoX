@@ -1,6 +1,7 @@
 package com.xayappz.cryptox.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,12 +57,21 @@ class HomeFragment : Fragment() {
         loadDataFromApi()
         _coin_ViewModel.getSearchData().observe(requireActivity(), Observer { it ->
             if (it != null) {
+                Log.d("DAAAAA", it.toString())
                 _responseCoinsData.clear()
-                setAdapter(it)
+                setAdapter(it, -1)
             }
 
         })
 
+        _coin_ViewModel.getSearchPosition().observe(requireActivity(), Observer { it ->
+            if (it != null) {
+                Log.d("DAAAAA", it.toString())
+                _responseCoinsData.clear()
+                setAdapter(emptyList(), -1)
+            }
+
+        })
 
     }
 
@@ -80,7 +90,7 @@ class HomeFragment : Fragment() {
 
                         }
                     }
-                    setAdapter(_responseCoinsData)
+                    setAdapter(_responseCoinsData, -1)
 
                 }
 
@@ -90,12 +100,12 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun setAdapter(data: List<Data?>) {
+    private fun setAdapter(data: List<Data?>, position: Int) {
         Progress.cancelDialog()
 
         _binding?.CryptoRV?.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = CoinAdapter(this.context, data)
+            adapter = CoinAdapter(this.context, data, position)
         }
         //fetchDataWM()
     }
