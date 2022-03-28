@@ -1,5 +1,5 @@
-# CryptoX
-
+# CryptoX  -Code Not Updated
+ 
 CryptoX is a secure, user-friendly crypto exchange platform, where you can trade and invest in 100+ cryptos like Bitcoin, Ethereum, Ripple, etc easily, at the best rate, with a variety of payments options. The users can access the pooled liquidity of the leading cryptocurrency exchanges in India to get the best rate and trade instantaneously.
 
 With a seamless user experience and a simplistic user interface, CryptoX App emerges as the best crypto trading app in India.
